@@ -12,15 +12,10 @@
   </head>
   <body>
     {% include 'navbar.html' %}
-    <div class="container">
-        <div class="row">
-            <div class="col-6 mx-auto">
+    <div class="container-fluid">
+        {% block content %}
 
-                {% block content %}
-
-                {% endblock %}
-            </div>
-        </div>
+        {% endblock %}
     </div>
   {% include 'js.html' %}
 </body>
