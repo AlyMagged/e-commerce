@@ -44,6 +44,8 @@ def blog_post_detail_view(request, slug):
 def blog_post_update_view(request, slug):
     obj = get_object_or_404(BlogPost, slug=slug)
     form = BlogPostModelForm(request.POST or None, instance=obj)
+    if form.is_valid():
+        form.save()
     template_name = 'form.html'
     context = {'form': form, 'title': f"Update {obj.title}"}
     return render(request, template_name, context)
