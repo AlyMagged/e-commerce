@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user_model
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .forms import ContactForm, LoginForm, RegisterForm
@@ -56,6 +56,20 @@ def login_page(request):
     template = 'auth/login.html'
     return render(request, template, context)
 
-
+User = get_user_model()
 def register_page(request):
-    return render(request, '', {})
+    form = RegisterForm(request.POST or None)
+    context = {
+        'form': form,
+    }
+    if form.is_valid():
+        print(form.cleaned_data)
+        username = form.cleaned_data.get('username')
+        email = form.cleaned_data.get('email')
+        password = form.cleaned_data.get('password')
+
+        new_user = User.objects.create_user(username=username, email=email, password=password)
+        print(new_user)
+
+    template = 'auth/register.html'
+    return render(request, template, context)
