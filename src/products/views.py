@@ -17,6 +17,11 @@ class ProductListView(ListView):
         print(context)
         return context
 
+    def get_queryset(self, *args, **kwargs):
+        request = self.request
+        return Product.objects.all()
+
+
 
 def product_list_view(request):
     queryset = Product.objects.all()
@@ -27,8 +32,8 @@ def product_list_view(request):
     return render(request, template_name=template, context=context)
 
 
-class ProductDetailView(ListView):
-    queryset = Product.objects.all()
+class ProductDetailView(DetailView):
+    # queryset = Product.objects.all()
     template_name = 'products/product_details.html'
 
     def get_context_data(self, *args, **kwargs):
@@ -36,14 +41,31 @@ class ProductDetailView(ListView):
         print(context)
         return context
 
+    def get_object(self):
+        request = self.request
+        pk = self.kwargs.get('pk')
+        instance = Product.objects.get_by_id(id=pk)
+        if instance is None:
+            raise Http404("Product doesn't exist")
+        return instance
+
+    # def get_queryset(self, *args, **kwargs):
+    #     request = self.request
+    #     pk = self.kwargs.get('pk')
+    #     return Product.objects.filter(id=pk)
+
 
 def product_detail_view(request, pk, *args, **kwargs):
     # instance = get_object_or_404(Product, pk=pk)
-    qs = Product.objects.filter(id=pk)
-    if qs.exists() and qs.count() ==1:
-        instance = qs.first()
-    else:
+    instance = Product.objects.get_by_id(id=pk)
+    # print(instance)
+    if instance is None:
         raise Http404("Product doesn't exist")
+    # qs = Product.objects.filter(id=pk)
+    # if qs.exists() and qs.count() ==1:
+    #     instance = qs.first()
+    # else:
+    #     raise Http404("Product doesn't exist")
 
     template = 'products/product_details.html'
     context = {
