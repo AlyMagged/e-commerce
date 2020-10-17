@@ -1,4 +1,28 @@
+{% extends "base.html" %}
 {% load static %}
+
+{% block content %}
+<div class="text-center">
+    <h1>{{ title }}</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <img src="{% static 'img/ecommerce.jpg' %}" class="img-fluid" />
+            {{ content }}
+        </div>
+    </div>
+    {% if request.user.is_authenticated %}
+    <div class="row">
+        <div class="col">
+            <h1>Premium</h1>
+            {{ premium_content }}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -13,25 +37,7 @@
     <title>Hello, world!</title>
   </head>
   <body>
-    <div class="text-center">
-        <h1>{{ title }}</h1>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <img src="{% static 'img/ecommerce.jpg' %}" class="img-fluid" />
-                {{ content }}
-            </div>
-        </div>
-        {% if request.user.is_authenticated %}
-        <div class="row">
-            <div class="col">
-                <h1>Premium</h1>
-                {{ premium_content }}
-            </div>
-        </div>
-        {% endif %}
-    </div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
